@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentContainerView
 
 
 /*
@@ -27,16 +28,34 @@ class MainActivity : AppCompatActivity(), ButtonFragment.ButtonInterface {
             - Show _only_ ButtonFragment if portrait
             - show _both_ fragments if Landscape
           */
+        if (findViewById<FragmentContainerView>(R.id.container2) != null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container1, ButtonFragment())
+                .replace(R.id.container2, DieFragment())
+                .commit()
+        } else {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container1, ButtonFragment())
+                .commit()
+        }
     }
 
     /* TODO 2: switch fragments if die rolled and in portrait (no need to switch fragments if Landscape)
         */
 
+
+
     // This callback function gets invoked when the child Fragment invokes it
     // Remember to place Fragment transactions on BackStack so then can be reversed
     override fun buttonClicked() {
+        if(findViewById<FragmentContainerView>(R.id.container2) == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container1, DieFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+        }
 
     }
 
 
-}
